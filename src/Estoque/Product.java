@@ -1,28 +1,24 @@
 package Estoque;
 
 public class Product {
-	private String name;
-	private double price;
-	private int quantity;
+	public String name;
+	public double price;
+	public int quantity;
 	
-	public double TotalValueInStock() {
+	public double totalValueInStock() {
 		return this.price * this.quantity;
 	}
 	
-	public void InsertNaame(String name) {
-		this.name = name;
-	}
-	
-	public void AddProduct(int quantity, double price) {
+	public void addProduct(int quantity) {
 		this.quantity += quantity;
-		this.price = price;
 	}
 	
-	public void RemoveProduct(int quantity) {
+	public void removeProduct(int quantity) {
 		this.quantity -= quantity;
 	}
 	
 	public String toString(){
-		return "produto: " + this.name + " preco: " + this.price + " quantidade: " + this.quantity;
+		return "produto data: " + this.name + ", $ " + String.format("%.2f",this.price) + ", "
+				+ this.quantity + " units, " +" Total: $ "+ String.format("%.2f",totalValueInStock());
 	}
 }

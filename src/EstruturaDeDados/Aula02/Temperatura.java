@@ -25,5 +25,7 @@ public class Temperatura{
 		System.out.println("A media da temperatura na semana foi de " + media+"°");
 		System.out.println("A temperatura fico acima da media durante " + acima);
 		System.out.println("A temperatura fico abaixo da media durante " + abaixo);
+		
+		leitor.close();
 	}
 }
