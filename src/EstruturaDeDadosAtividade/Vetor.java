@@ -34,6 +34,21 @@ public class Vetor {
 		
 		return  -1;
 	}
+	
+	public boolean trocaPosicao(String nome1, String nome2) {
+		int busca1 = busca(nome1);
+		int busca2 = busca(nome2);
+		if(busca1 >= 0 && busca2 >= 0) {
+			String armazena = this.elementos[busca1];
+			this.elementos[busca1] = this.elementos[busca2];
+			this.elementos[busca2] = armazena;
+			JOptionPane.showMessageDialog(null, "A troca realizada com sucesso.");
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "A troca falhou!!");
+			return false;
+		}
+	}
 
 	public String getElementos(int posicao) {
 		boolean testa;
@@ -56,8 +71,8 @@ public class Vetor {
 	}
 	
 	public void adicionaElementos(String valor) {
-		aumentaVetor();
-		if(tamanho <= this.elementos.length) {
+		if(tamanho <= this.elementos.length - 1) {
+			System.out.println("Entrou");
 			elementos[tamanho] = valor;
 			tamanho++;
 		}else {
@@ -69,7 +84,7 @@ public class Vetor {
 		if(posicao >= 0 &&  posicao < tamanho) {
 			return this.elementos[posicao];
 		}{
-			return "Essa posicao não existe no vetor";
+			return null;
 		}
 	}
 	
@@ -85,6 +100,10 @@ public class Vetor {
 	
 	public int getTamanho() {
 		return tamanho;
+	}
+	
+	public int tamanhoSala() {
+		return this.elementos.length;
 	}
 	
 	public boolean adicionaPosicao(int pos, String valor) {
@@ -129,7 +148,7 @@ public class Vetor {
 	}
 	
 	// DOBRA O TAMANHO DO VETOR, SE ELE ESTIVER CHEIO.
-	private void aumentaVetor() {
+	public void aumentaVetor() {
 		if(tamanho == this.elementos.length) {
 			String[] novoElemento = new String[this.elementos.length * 2];
 			for(int i = 0; i < this.elementos.length ; i++) {
@@ -137,6 +156,9 @@ public class Vetor {
 			}
 			
 			this.elementos = novoElemento;
+			JOptionPane.showMessageDialog(null, "Tamanho da sala aumentado com sucesso.");
+		}else {			
+			JOptionPane.showMessageDialog(null, "Erro ao aumentar a sala!!");
 		}
 	}
 	
