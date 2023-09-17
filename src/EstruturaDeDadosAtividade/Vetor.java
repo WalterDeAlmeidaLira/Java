@@ -121,21 +121,6 @@ public class Vetor {
 		}
 	}
 	
-//	public boolean adicionaPosicao(int pos, String valor) {
-//		aumentaVetor();
-//		if(pos >= 0 && pos < tamanho) {
-//			for(int i = tamanho -1; i > pos ; i--) {
-//				this.elementos[i+1] = this.elementos[i];
-//			}
-//			this.elementos[pos] = valor;
-//			tamanho++;
-//		}else {
-//			JOptionPane.showMessageDialog(null, "Posicao invalida");
-//		}
-//		
-//		return true;
-//	}
-	
 	public void remover(int posicao) {
 		if(posicao >= 0 && posicao < this.tamanho) {
 			for(int i = posicao; i < this.tamanho; i++) {
