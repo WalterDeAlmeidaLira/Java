@@ -41,6 +41,9 @@ public class Calculadora extends JFrame implements ItemListener, ActionListener{
 		//COR DE FUNDO DOS BOTÕES TIPO RADIO
 		Color cinza = new Color(128,128,128);
 		
+		//CENTRALIZA O APP
+		setLocationRelativeTo(null);
+		
 		//CRIANDO OS BOTÕES DE RÁDIO
 		soma = new JRadioButton("soma", false);
 		soma.setBackground(cinza);
