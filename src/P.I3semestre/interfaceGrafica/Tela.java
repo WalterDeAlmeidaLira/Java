@@ -54,6 +54,7 @@ public class Tela extends JFrame implements ActionListener{
 	private AbastecimentoDao adao = new AbastecimentoDao();
 	private JScrollPane scroll;
 	private Border border;
+	//private String[] nomeVeiculo =  null;
 
 
 	public Tela() {
@@ -145,10 +146,7 @@ public class Tela extends JFrame implements ActionListener{
 		tipo = criarLabel("Tipo de Combustível");
 		txtTipo = criarInput();
 		telaCadastroAbastecimento.add(tipo);
-		telaCadastroAbastecimento.add(txtTipo);		
-
-
-
+		telaCadastroAbastecimento.add(txtTipo);
 
 		preco = criarLabel("Preço");
 		txtPreco = criarInput();
@@ -205,6 +203,16 @@ public class Tela extends JFrame implements ActionListener{
 
 		add(tabbedPane);
 	}
+	
+//	private void listarVeiculo(String[] nomeVeiculo) {
+//		String[] nomeVeiculo2 = new String[vdao.Listar().size()];
+//		this.nomeVeiculo = nomeVeiculo2;
+//		System.out.println(vdao.Listar().size());
+//		System.out.println(nomeVeiculo.length);
+//		for(int i = 0; i < vdao.Listar().size(); i++) {
+//			nomeVeiculo[i] = vdao.Listar().get(i).getModelo(); 
+//		}
+//	}
 
 	private JLabel criarLabel(String txt) {
 		JLabel criarTexto = new JLabel(txt);
@@ -240,7 +248,7 @@ public class Tela extends JFrame implements ActionListener{
 
 			vdao.adicionar(veiculo);
 			
-			getContentPane().repaint();
+			//listarVeiculo(this.nomeVeiculo);
 		}else if(e.getSource() == gravarPosto) {
 			Posto posto = new Posto();
 			posto.setNome(txtNomePosto.getText());

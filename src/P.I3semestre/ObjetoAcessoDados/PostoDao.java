@@ -60,4 +60,22 @@ public class PostoDao {
 		
 		return postos;
 	}
+	
+	public void removerPosto(Posto posto) {
+		Connection con = null;
+		PreparedStatement pstm = null;
+		try {
+			con = Conecta.getConnection();
+			pstm = con.prepareStatement("delete from posto where idposto=?");
+			pstm.setInt(1, posto.getIdPosto());
+			pstm.executeUpdate();			
+			JOptionPane.showMessageDialog(null, "Posto removido com sucesso", "Remover posto",JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Erro ao remover posto", "ERRO AO REMOVER POSTO",JOptionPane.ERROR_MESSAGE);
+		}finally {
+			Conecta.closeDB(con, pstm);
+		}
+	}
+
+
 }
