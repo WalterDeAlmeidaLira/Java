@@ -81,6 +81,38 @@ public class VeiculoDao {
 		return veiculos;
 	}
 
+	public List<Veiculo> ListarModelo(){
+		List<Veiculo> veiculos = new ArrayList<>();
+		Connection con = Conecta.getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		try {
+
+			pstm = con.prepareStatement("select * from veiculo order by modelo;");
+			rs = pstm.executeQuery();
+
+			while(rs.next()) {
+				Veiculo veiculo = new Veiculo();
+
+				veiculo.setIdVeiculo(rs.getInt(1));
+				veiculo.setModelo(rs.getString(2));
+				veiculo.setPlaca(rs.getString(3));
+				veiculo.setKm(rs.getDouble(4));
+
+				veiculos.add(veiculo);
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showInternalMessageDialog(null, "Erro ao listar valores","Erro na lista",JOptionPane.ERROR_MESSAGE);
+		}finally {
+			Conecta.closeDB(con,pstm,rs);
+		}
+
+
+		return veiculos;
+	}
+
 	public void removerVeiculo(Veiculo veiculo) {
 		Connection con = null;
 		PreparedStatement pstm = null;

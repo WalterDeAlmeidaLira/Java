@@ -43,12 +43,12 @@ public class Tela extends JFrame implements ActionListener{
 	private JPanel painelVeiculo, painelPosto, 
 	painelAbastecimento,painelLista,telaCadastroVeiculo,telaCadastroPosto,telaCadastroAbastecimento;
 	private JLabel tituloVeiculo,tituloPosto,tituloAbastecimento,
-	tituloLista,modelo,placa,nomePosto,Localizacao,data,litros,km,preco,tipo;
+	tituloLista,modelo,placa,nomePosto,Localizacao,data,litros,km,preco,tipo,nomeFiltro;
 	private JTextField txtModelo,txtPlaca,txtNomePosto,txtLocalizacao,
 	txtData,txtLitros,txtKm,txtPreco,txtTipo;
 	private JButton gravarVeiculo,gravarPosto,gravarAbastecimento,gerarLista;
 	private JTextArea areaLista;
-	private JList listaVeiculo, listaPosto;
+	private JList listaVeiculo, listaPosto,filtro;
 	private VeiculoDao vdao = new VeiculoDao();
 	private PostoDao pdao = new PostoDao();
 	private AbastecimentoDao adao = new AbastecimentoDao();
@@ -194,9 +194,18 @@ public class Tela extends JFrame implements ActionListener{
 		gerarLista = criarBotao("Gerar Listar");
 		gerarLista.addActionListener(this);
 		painelLista.add(gerarLista);
+		nomeFiltro = criarLabel("Filtro: ");
+		painelLista.add(nomeFiltro);
+		String[] filtros = {"veiculo","data"};
+		filtro = new JList(filtros);
+		filtro.setVisibleRowCount(1);
+		filtro.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		painelLista.add(new JScrollPane(filtro));
 		areaLista = new JTextArea(20,50);
 		scroll = new JScrollPane(areaLista);
 		painelLista.add(scroll);
+		
+		
 
 
 		tabbedPane.addTab("Listar Abastecimentos", null, painelLista, "Lista");
@@ -314,37 +323,76 @@ public class Tela extends JFrame implements ActionListener{
 			
 		}else if(e.getSource() == gerarLista) {
 			
-			areaLista.append("  Data          Litros   Tipo   preço/litro \n");
-			for(int i = 0; i < adao.listarAbastecimento().size(); i++) {
-				areaLista.append(adao.listarAbastecimento().get(i).toString());
-			}
-			
-			int[] valorVeiculo = new int[adao.listarAbastecimento().size()];
-			for(int i = 0; i < vdao.Listar().size(); i++) {
-				valorVeiculo[i] = vdao.Listar().get(i).getIdVeiculo();
-			}
-			int[] verificadorKm = new int[adao.listarAbastecimento().size()];
-			int[] verificadorLitros = new int[adao.listarAbastecimento().size()];
-			for(int i = 0; i < adao.listarAbastecimento().size(); i++) {
-				for(int j = 0; j < adao.listarAbastecimento().size(); j++) {
-					if(valorVeiculo[i] == adao.listarAbastecimento().get(j).getIdVeiculo()) {
-						verificadorKm[i] += 100;
-						verificadorLitros[i] += adao.listarAbastecimento().get(j).getLitros();
-						System.out.println(verificadorKm[i] +" "+ i);
-						System.out.println(verificadorLitros[i]);
-					}
+			if(filtro.isSelectionEmpty() || filtro.getSelectedValue() == "veiculo") {
+				areaLista.append("  Data          Litros   Tipo   preço/litro \n");
+				for(int i = 0; i < adao.listarAbastecimento().size(); i++) {
+					areaLista.append(adao.listarAbastecimento().get(i).toString());
+				}
+			}else{
+				areaLista.append("  Data          Litros   Tipo   preço/litro \n");
+				for(int i = 0; i < adao.listarAbastecimento().size(); i++) {
+					areaLista.append(adao.listarAbastecimentoData().get(i).toString());
 				}
 			}
 			
-			areaLista.append("Carro  km/l \n");
-			
-			for(int i = 0; i < vdao.Listar().size(); i++) {
-				String imveic = vdao.Listar().get(i).getModelo();
-				areaLista.append(imveic+"  ");
-				double kml = (double) verificadorKm[i]/verificadorLitros[i];
-				String skml =String.format("%.2f \n", kml);
-				areaLista.append(skml);
+			if(filtro.getSelectedValue()== "veiculo") {
+				//System.out.println("lista ordenada");
+				int[] valorVeiculo = new int[adao.listarAbastecimento().size()];
+				for(int i = 0; i < vdao.Listar().size(); i++) {
+					valorVeiculo[i] = vdao.ListarModelo().get(i).getIdVeiculo();
+				}
+				int[] verificadorKm = new int[adao.listarAbastecimento().size()];
+				int[] verificadorLitros = new int[adao.listarAbastecimento().size()];
+				for(int i = 0; i < adao.listarAbastecimento().size(); i++) {
+					for(int j = 0; j < adao.listarAbastecimento().size(); j++) {
+						if(valorVeiculo[i] == adao.listarAbastecimento().get(j).getIdVeiculo()) {
+							verificadorKm[i] += 100;
+							verificadorLitros[i] += adao.listarAbastecimento().get(j).getLitros();
+							System.out.println(verificadorKm[i] +" "+ i);
+							System.out.println(verificadorLitros[i]);
+						}
+					}
+				}
+				
+				areaLista.append("Carro  km/l \n");
+				
+				for(int i = 0; i < vdao.Listar().size(); i++) {
+					String imveic = vdao.ListarModelo().get(i).getModelo();
+					areaLista.append(imveic+"  ");
+					double kml = (double) verificadorKm[i]/verificadorLitros[i];
+					String skml =String.format("%.2f \n", kml);
+					areaLista.append(skml);
+				}
+			}else {
+
+				int[] valorVeiculo = new int[adao.listarAbastecimento().size()];
+				for(int i = 0; i < vdao.Listar().size(); i++) {
+					valorVeiculo[i] = vdao.Listar().get(i).getIdVeiculo();
+				}
+				int[] verificadorKm = new int[adao.listarAbastecimento().size()];
+				int[] verificadorLitros = new int[adao.listarAbastecimento().size()];
+				for(int i = 0; i < adao.listarAbastecimento().size(); i++) {
+					for(int j = 0; j < adao.listarAbastecimento().size(); j++) {
+						if(valorVeiculo[i] == adao.listarAbastecimento().get(j).getIdVeiculo()) {
+							verificadorKm[i] += 100;
+							verificadorLitros[i] += adao.listarAbastecimento().get(j).getLitros();
+							System.out.println(verificadorKm[i] +" "+ i);
+							System.out.println(verificadorLitros[i]);
+						}
+					}
+				}
+				
+				areaLista.append("Carro  km/l \n");
+				
+				for(int i = 0; i < vdao.Listar().size(); i++) {
+					String imveic = vdao.Listar().get(i).getModelo();
+					areaLista.append(imveic+"  ");
+					double kml = (double) verificadorKm[i]/verificadorLitros[i];
+					String skml =String.format("%.2f \n", kml);
+					areaLista.append(skml);
+				}
 			}
+			
 			
 			areaLista.append("\n");
 			

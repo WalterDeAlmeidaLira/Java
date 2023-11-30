@@ -12,7 +12,7 @@ import banco_de_dados.Conecta;
 import gerenciadorDeAbastecimento.Abastecimento;
 
 public class AbastecimentoDao{
-	
+
 	public void adicionar(Abastecimento abastecimento) {
 
 		Connection con = Conecta.getConnection();
@@ -34,23 +34,23 @@ public class AbastecimentoDao{
 			Conecta.closeDB(con,pstm);
 		}
 	}
-	
+
 	public List<Abastecimento> listarAbastecimento(){
-		
+
 		List<Abastecimento> abastecimentos = new ArrayList<>();
 		Connection con = Conecta.getConnection();
 		PreparedStatement pstm = null;
 		ResultSet rs = null;
-		
+
 		try {
-			
+
 			pstm = con.prepareStatement("select * from abastecimento;");
 			rs = pstm.executeQuery();
-			
+
 			while(rs.next()) {
-				
+
 				Abastecimento abast = new Abastecimento();
-				
+
 				abast.setIdAbastecimento(rs.getInt(1));
 				abast.setIdVeiculo(rs.getInt(2));
 				abast.setIdPosto(rs.getInt(3));
@@ -58,19 +58,61 @@ public class AbastecimentoDao{
 				abast.setLitros(rs.getDouble(5));
 				abast.setTipo(rs.getString(6));
 				abast.setPrecolitro(rs.getDouble(7));
-				
+
 				abastecimentos.add(abast);
-				
+
 			}
-			
+
 		} catch (Exception e) {
 			JOptionPane.showInternalMessageDialog(null, "Erro ao registrar abastecimeto","Abastecimento",JOptionPane.ERROR_MESSAGE);
 		}finally {
 			Conecta.closeDB(con,pstm,rs);
 		}
-		
-		
-		
+
+
+
 		return abastecimentos;
+
 	}
+
+	public List<Abastecimento> listarAbastecimentoData(){
+
+		List<Abastecimento> abastecimentos = new ArrayList<>();
+		Connection con = Conecta.getConnection();
+		PreparedStatement pstm = null;
+		ResultSet rs = null;
+
+		try {
+
+			pstm = con.prepareStatement("select * from abastecimento order by dataabastecimento;");
+			rs = pstm.executeQuery();
+
+			while(rs.next()) {
+
+				Abastecimento abast = new Abastecimento();
+
+				abast.setIdAbastecimento(rs.getInt(1));
+				abast.setIdVeiculo(rs.getInt(2));
+				abast.setIdPosto(rs.getInt(3));
+				abast.setData(rs.getDate(4));
+				abast.setLitros(rs.getDouble(5));
+				abast.setTipo(rs.getString(6));
+				abast.setPrecolitro(rs.getDouble(7));
+
+				abastecimentos.add(abast);
+
+			}
+
+		} catch (Exception e) {
+			JOptionPane.showInternalMessageDialog(null, "Erro ao registrar abastecimeto","Abastecimento",JOptionPane.ERROR_MESSAGE);
+		}finally {
+			Conecta.closeDB(con,pstm,rs);
+		}
+
+
+
+		return abastecimentos;
+
+	}
+	
 }
